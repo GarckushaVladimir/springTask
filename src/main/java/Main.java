@@ -27,7 +27,7 @@ public class Main {
         cart.addItem(item1);
         cart.addItem(item2);
 
-        Buyer buyer = context.getBean(Buyer.class, cart);
+        Buyer buyer = context.getBean(Buyer.class);
 
         CostCalculateStrategy simpleCostCalculateStrategy = context.getBean("simpleCostCalculateStrategy", CostCalculateStrategy.class);
         CostCalculateStrategy improvedCostCalculateStrategy = context.getBean("improvedCostCalculateStrategy", CostCalculateStrategy.class);

@@ -1,3 +1,4 @@
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.*;
 import project.Calculator.Calculator;
 import project.Calculator.CostCalculateStrategy;
@@ -24,13 +25,12 @@ public class AppConfig {
 //        return new SailDecorator(item, percent);
 //    }
     @Bean
-    @Scope(value = "prototype")
     public StoreCart storeCart() {
         return new StoreCart();
     }
     @Bean
     @Scope(value = "prototype")
-    public Buyer buyer(StoreCart cart) {
+    public Buyer buyer(@Qualifier("storeCart") StoreCart cart) {
         return new Person(cart);
     }
 
