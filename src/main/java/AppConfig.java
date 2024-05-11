@@ -1,54 +1,32 @@
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
-import project.Calculator.*;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.*;
+import project.Calculator.Calculator;
+import project.Calculator.CostCalculateStrategy;
+import project.Calculator.ImprovedCostCalculateStrategy;
+import project.Calculator.SimpleCostCalculateStrategy;
 import project.Cart.StoreCart;
-import project.Cart.StoreCartIterator;
-import project.Items.*;
+import project.Items.Item;
+import project.Items.ItemFactory;
+import project.Items.SailDecorator;
+import project.Items.SimpleItemFactory;
+import project.People.Buyer;
 import project.People.Person;
 
-import java.util.ArrayList;
-
 @Configuration
-@ComponentScan("project")
+@ComponentScan(basePackages = {"project"})
 public class AppConfig {
     @Bean
-    public ItemFactory itemFactory() {
+    public ItemFactory itemFactory () {
         return SimpleItemFactory.getInstance();
     }
 
     @Bean
-    @Scope(value = "singleton")
-    public Item simpleItem() {
-        return itemFactory().createItem(10.0, 5.0);
+    public Buyer buyer(StoreCart cart) {
+        return new Person(cart);
     }
 
     @Bean
-    @Scope(value = "prototype")
-    public SailDecorator sailDecorator() {
-        return new SailDecorator(simpleItem(), 0.5);
-    }
-
-    @Bean
-    @Scope(value = "prototype")
-    public StoreCart storeCart() {
-        return new StoreCart();
-    }
-
-    @Bean
-    @Scope(value = "prototype")
-    public Person person() {
-        return new Person(storeCart());
-    }
-
-    @Bean
-    @Scope(value = "prototype")
-    public Calculator calculator() {
-        return new Calculator(improvedCostCalculateStrategy(), costCalculatorVisitor());
-    }
-
-    @Bean
+    @Primary // Добавляем эту аннотацию, чтобы указать, что это основной бин
     public CostCalculateStrategy simpleCostCalculateStrategy() {
         return new SimpleCostCalculateStrategy();
     }
@@ -57,14 +35,22 @@ public class AppConfig {
     public CostCalculateStrategy improvedCostCalculateStrategy() {
         return new ImprovedCostCalculateStrategy();
     }
-
     @Bean
-    public CostCalculatorVisitor costCalculatorVisitor() {
-        return new CostCalculatorVisitor();
+    public Calculator simpleCalculator(@Qualifier("simpleCostCalculateStrategy") CostCalculateStrategy costCalculateStrategy) {
+        return new Calculator(costCalculateStrategy);
     }
 
     @Bean
-    public StoreCartIterator storeCartIterator() {
-        return new StoreCartIterator(new ArrayList<>());
+    public Calculator improvedCalculator(@Qualifier("improvedCostCalculateStrategy") CostCalculateStrategy costCalculateStrategy) {
+        return new Calculator(costCalculateStrategy);
+    }
+//    @Bean
+//    public Calculator calculator(CostCalculateStrategy costCalculateStrategy) {
+//        return new Calculator(costCalculateStrategy);
+//    }
+    @Bean
+    @Scope(value = "prototype")
+    public StoreCart storeCart() {
+        return new StoreCart();
     }
 }

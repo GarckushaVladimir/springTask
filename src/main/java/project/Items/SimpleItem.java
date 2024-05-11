@@ -1,11 +1,10 @@
 package project.Items;
 
-import org.springframework.stereotype.Component;
 
 /*
   Реализует товар, имеющий стоимость и вес
 */
-@Component
+
 public class SimpleItem implements Item {
     private double price;
     private double weight;

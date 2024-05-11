@@ -1,7 +1,8 @@
 package project.Calculator;
 
-import project.Cart.StoreCart;
+
+import project.People.Buyer;
 
 public interface CostCalculateStrategy {
-    double calculateCost(StoreCart cart);
+    double calculateCost(Buyer buyer);
 }

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
   Паттерн Декоратор
   Реализует интерфейс project.Items.Item, предоставляет возможность добавления скидки
 */
-@Component
+
 public class SailDecorator implements Item{
     private Item item;
     private double sailPercent;
