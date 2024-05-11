@@ -8,13 +8,19 @@ import project.Cart.StoreCart;
 public class Calculator {
     @Autowired
     private CostCalculateStrategy costCalculateStrategy;
+    @Autowired
+    private CostCalculatorVisitor costCalculatorVisitor;
 
-    public Calculator(CostCalculateStrategy costCalculateStrategy) {
+    public Calculator(CostCalculateStrategy costCalculateStrategy, CostCalculatorVisitor costCalculatorVisitor) {
         this.costCalculateStrategy = costCalculateStrategy;
+        this.costCalculatorVisitor = costCalculatorVisitor;
     }
 
     public double calculateCost(Buyer buyer) {
         StoreCart cart = buyer.getCart();
-        return costCalculateStrategy.calculateCost(cart);
+        // Устанавливаем стратегию визитору перед его использованием
+        costCalculatorVisitor.setCostCalculateStrategy(costCalculateStrategy);
+        costCalculatorVisitor.visit(cart);
+        return costCalculatorVisitor.getTotalCost();
     }
 }

@@ -1,11 +1,12 @@
 package project.People;
 
+import org.springframework.stereotype.Component;
 import project.Cart.StoreCart;
 
 /*
   Реализация Покупателя
 */
-
+@Component
 public class Person implements Buyer {
     private final StoreCart cart;
 

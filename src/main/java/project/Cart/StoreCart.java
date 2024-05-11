@@ -5,10 +5,11 @@ package project.Cart;
   Реализует интерфейс project.Cart.Iterable, позволяя перебирать список покупок
 */
 
+import org.springframework.stereotype.Component;
 import project.Items.Item; // подключили интерфейс товар
 import java.util.ArrayList;
 import java.util.Iterator;
-
+@Component
 public class StoreCart implements Iterable<Item>{
     // Список товаров в чеке
     private final ArrayList<Item> items;

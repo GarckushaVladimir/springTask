@@ -1,16 +1,14 @@
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import project.Calculator.Calculator;
-import project.Calculator.CostCalculateStrategy;
-import project.Calculator.ImprovedCostCalculateStrategy;
-import project.Calculator.SimpleCostCalculateStrategy;
+import org.springframework.context.annotation.Scope;
+import project.Calculator.*;
 import project.Cart.StoreCart;
-import project.Items.ItemFactory;
+import project.Cart.StoreCartIterator;
+import project.Items.*;
 import project.People.Person;
-import project.Items.SailDecorator;
-import project.Items.SimpleItem;
-import project.Items.SimpleItemFactory;
+
+import java.util.ArrayList;
 
 @Configuration
 @ComponentScan("project")
@@ -21,42 +19,52 @@ public class AppConfig {
     }
 
     @Bean
-    @Scope(value = "prototype") // Установить область действия в prototype
-    public SimpleItem simpleItem() { // Предполагая, что SimpleItem находится в пакете 'project.Items'
-        return itemFactory().createItem(); // Получить SimpleItem из фабрики
+    @Scope(value = "singleton")
+    public Item simpleItem() {
+        return itemFactory().createItem(10.0, 5.0);
     }
 
     @Bean
-    @Scope(value = "prototype") // Установить область действия в prototype
-    public SailDecorator sailDecorator() { // Предполагая, что SailDecorator находится в пакете 'project.SailDecorators'
-        return new SailDecorator(); // Заменить на фактическое создание экземпляра класса SailDecorator
+    @Scope(value = "prototype")
+    public SailDecorator sailDecorator() {
+        return new SailDecorator(simpleItem(), 0.5);
     }
 
     @Bean
-    @Scope(value = "prototype") // Установить область действия в prototype
-    public StoreCart storeReceipt() { // Предполагая, что StoreReceipt находится в пакете 'project.Receipts'
-        return new StoreCart(); // Заменить на фактическое создание экземпляра класса StoreReceipt
+    @Scope(value = "prototype")
+    public StoreCart storeCart() {
+        return new StoreCart();
     }
 
     @Bean
-    @Scope(value = "prototype") // Установить область действия в prototype
-    public Person person() { // Предполагая, что Person находится в пакете 'project.People'
-        return new Person(); // Заменить на фактическое создание экземпляра класса Person
+    @Scope(value = "prototype")
+    public Person person() {
+        return new Person(storeCart());
     }
 
     @Bean
-    @Scope(value = "prototype") // Установить область действия в prototype
+    @Scope(value = "prototype")
     public Calculator calculator() {
-        return new Calculator(); // Заменить на фактическое создание экземпляра класса Calculator
+        return new Calculator(improvedCostCalculateStrategy(), costCalculatorVisitor());
     }
 
     @Bean
-    public CostCalculateStrategy simpleCostCalculatorStrategy() {
+    public CostCalculateStrategy simpleCostCalculateStrategy() {
         return new SimpleCostCalculateStrategy();
     }
 
     @Bean
     public CostCalculateStrategy improvedCostCalculateStrategy() {
         return new ImprovedCostCalculateStrategy();
+    }
+
+    @Bean
+    public CostCalculatorVisitor costCalculatorVisitor() {
+        return new CostCalculatorVisitor();
+    }
+
+    @Bean
+    public StoreCartIterator storeCartIterator() {
+        return new StoreCartIterator(new ArrayList<>());
     }
 }
