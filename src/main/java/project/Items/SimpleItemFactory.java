@@ -22,7 +22,7 @@ public class SimpleItemFactory implements ItemFactory{
     }
 
     @Override
-    public Item createItem(double price, double weight) {
-        return new SimpleItem(price, weight);
+    public Item createItem(double price, double weight, String name) {
+        return new SimpleItem(price, weight, name);
     }
 }

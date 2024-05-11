@@ -6,12 +6,14 @@ package project.Items;
 */
 
 public class SimpleItem implements Item {
+    private String name;
     private double price;
     private double weight;
 
-    public SimpleItem(double price, double weight) {
+    public SimpleItem(double price, double weight, String name) {
         this.price = price;
         this.weight = weight;
+        this.name = name;
     }
 
     @Override
@@ -22,5 +24,10 @@ public class SimpleItem implements Item {
     @Override
     public double getWeight() {
         return this.weight;
+    }
+
+    @Override
+    public String getName() {
+        return this.name;
     }
 }

@@ -1,5 +1,3 @@
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
 import project.Calculator.Calculator;
 import project.Calculator.CostCalculateStrategy;
@@ -14,7 +12,8 @@ import project.People.Buyer;
 import project.People.Person;
 
 @Configuration
-@ComponentScan(basePackages = {"project"})
+@ComponentScan(basePackages = {"project", "logger"})
+@EnableAspectJAutoProxy(proxyTargetClass = true)
 public class AppConfig {
     @Bean
     public ItemFactory itemFactory () {

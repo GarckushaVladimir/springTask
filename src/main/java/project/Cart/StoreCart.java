@@ -14,6 +14,7 @@ public class StoreCart implements Iterable<Item>{
     // Список товаров в чеке
     private final ArrayList<Item> items;
 
+
     public StoreCart() {
         this.items = new ArrayList<>();
     }

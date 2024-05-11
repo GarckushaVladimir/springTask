@@ -8,5 +8,5 @@ import org.springframework.stereotype.Component;
 */
 @Component
 public interface ItemFactory {
-    Item createItem(double price, double weight);
+    Item createItem(double price, double weight, String name);
 }

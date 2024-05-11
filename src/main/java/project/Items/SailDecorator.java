@@ -25,4 +25,9 @@ public class SailDecorator implements Item{
     public double getWeight() {
         return item.getWeight();
     }
+
+    @Override
+    public String getName() {
+        return item.getName();
+    }
 }

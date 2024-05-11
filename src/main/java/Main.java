@@ -17,8 +17,8 @@ public class Main {
 
         ItemFactory itemFactory = context.getBean("itemFactory", ItemFactory.class);
 
-        Item item1 = itemFactory.createItem(10, 5);
-        Item item2 = itemFactory.createItem(20, 2);
+        Item item1 = itemFactory.createItem(10, 5, "item1");
+        Item item2 = itemFactory.createItem(20, 2, "item2");
 
 //        Item sail = context.getBean(SailDecorator.class, item2, 0.5);
 

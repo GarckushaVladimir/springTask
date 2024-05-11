@@ -7,4 +7,5 @@ package project.Items;
 public interface Item {
     double getPrice();
     double getWeight();
+    String getName();
 }
