@@ -15,11 +15,12 @@ public class Main {
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
 
-        ItemFactory itemFactory = context.getBean(ItemFactory.class);
+        ItemFactory itemFactory = context.getBean("itemFactory", ItemFactory.class);
 
         Item item1 = itemFactory.createItem(10, 5);
         Item item2 = itemFactory.createItem(20, 2);
 
+//        Item sail = context.getBean(SailDecorator.class, item2, 0.5);
 
         StoreCart cart = context.getBean(StoreCart.class);
 
@@ -28,14 +29,14 @@ public class Main {
 
         Buyer buyer = context.getBean(Buyer.class, cart);
 
-//        CostCalculateStrategy simpleCostCalculateStrategy = context.getBean("simpleCostCalculateStrategy", CostCalculateStrategy.class);
-//        CostCalculateStrategy improvedCostCalculateStrategy = context.getBean("improvedCostCalculateStrategy", CostCalculateStrategy.class);
+        CostCalculateStrategy simpleCostCalculateStrategy = context.getBean("simpleCostCalculateStrategy", CostCalculateStrategy.class);
+        CostCalculateStrategy improvedCostCalculateStrategy = context.getBean("improvedCostCalculateStrategy", CostCalculateStrategy.class);
 
-        Calculator calculator1 = context.getBean("simpleCalculator", Calculator.class);
+        Calculator calculator1 = context.getBean(Calculator.class, simpleCostCalculateStrategy);
         System.out.println("Total cost with SimpleCalculator: " + calculator1.calculateCost(buyer));
 
-        Calculator calculator2 = context.getBean("improvedCalculator", Calculator.class);
-        System.out.println("Total cost with SimpleCalculator: " + calculator2.calculateCost(buyer));
+        Calculator calculator2 = context.getBean(Calculator.class, improvedCostCalculateStrategy);
+        System.out.println("Total cost with ImprovedCalculator: " + calculator2.calculateCost(buyer));
 
         System.out.println("Total weight: " + cart.getTotalWeight());
     }

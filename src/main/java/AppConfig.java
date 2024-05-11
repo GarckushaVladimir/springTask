@@ -1,4 +1,5 @@
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
 import project.Calculator.Calculator;
 import project.Calculator.CostCalculateStrategy;
@@ -19,14 +20,22 @@ public class AppConfig {
     public ItemFactory itemFactory () {
         return SimpleItemFactory.getInstance();
     }
-
+//    @Bean
+//    public Item sailDecorator(Item item, @Value("0.5") double percent) {
+//        return new SailDecorator(item, percent);
+//    }
     @Bean
+    @Scope(value = "prototype")
+    public StoreCart storeCart() {
+        return new StoreCart();
+    }
+    @Bean
+    @Scope(value = "prototype")
     public Buyer buyer(StoreCart cart) {
         return new Person(cart);
     }
 
     @Bean
-    @Primary // Добавляем эту аннотацию, чтобы указать, что это основной бин
     public CostCalculateStrategy simpleCostCalculateStrategy() {
         return new SimpleCostCalculateStrategy();
     }
@@ -35,22 +44,11 @@ public class AppConfig {
     public CostCalculateStrategy improvedCostCalculateStrategy() {
         return new ImprovedCostCalculateStrategy();
     }
+
     @Bean
-    public Calculator simpleCalculator(@Qualifier("simpleCostCalculateStrategy") CostCalculateStrategy costCalculateStrategy) {
+    @Scope(value = "prototype")
+    public Calculator calculator(CostCalculateStrategy costCalculateStrategy) {
         return new Calculator(costCalculateStrategy);
     }
 
-    @Bean
-    public Calculator improvedCalculator(@Qualifier("improvedCostCalculateStrategy") CostCalculateStrategy costCalculateStrategy) {
-        return new Calculator(costCalculateStrategy);
-    }
-//    @Bean
-//    public Calculator calculator(CostCalculateStrategy costCalculateStrategy) {
-//        return new Calculator(costCalculateStrategy);
-//    }
-    @Bean
-    @Scope(value = "prototype")
-    public StoreCart storeCart() {
-        return new StoreCart();
-    }
 }
